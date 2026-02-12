@@ -2,23 +2,25 @@
 require_once 'includes/config.php';
 require_once 'includes/functions.php';
 
-// Simple session-based cart for demo
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
-}
+$userId = isLoggedIn() ? $_SESSION['user_id'] : null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_id'])) {
     $pid = $_POST['product_id'];
-    $_SESSION['cart'][$pid] = ($_SESSION['cart'][$pid] ?? 0) + 1;
+    // Default quantity to 1 if not specified (for add)
+    $qty = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
+
+    // Check for action (add, update, remove)
+    if (isset($_POST['action']) && $_POST['action'] === 'remove') {
+        removeFromCart($pid, $userId);
+    } elseif (isset($_POST['action']) && $_POST['action'] === 'update') {
+        updateCartQuantity($pid, $qty, $userId);
+    } else {
+        // Default action is add (increment)
+        addToCart($pid, $qty, $userId);
+    }
 }
 
-// Fetch products in cart
-$cart_products = [];
-if (!empty($_SESSION['cart'])) {
-    $ids = implode(',', array_keys($_SESSION['cart']));
-    $stmt = $pdo->query("SELECT * FROM products WHERE id IN ($ids)");
-    $cart_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+$cart_products = getCartItems($userId);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,13 +38,16 @@ if (!empty($_SESSION['cart'])) {
             <?php
             $total = 0;
             foreach ($cart_products as $p):
-                $qty = $_SESSION['cart'][$p['id']];
-                $subtotal = $p['price'] * $qty;
-                $total += $subtotal;
+                $total += $p['subtotal'];
             ?>
                 <li>
                     <?= htmlspecialchars($p['name']) ?>
-                    (x<?= $qty ?>) - $<?= number_format($subtotal, 2) ?>
+                    (x<?= $p['quantity'] ?>) - $<?= number_format($p['subtotal'], 2) ?>
+                    <form method="POST" style="display:inline;">
+                        <input type="hidden" name="product_id" value="<?= $p['id'] ?>">
+                        <input type="hidden" name="action" value="remove">
+                        <button type="submit">Remove</button>
+                    </form>
                 </li>
             <?php endforeach; ?>
         </ul>
