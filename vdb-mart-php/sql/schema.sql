@@ -28,6 +28,8 @@ CREATE TABLE orders (
     total_amount DECIMAL(10, 2) NOT NULL,
     status ENUM('pending', 'processing', 'shipped', 'delivered', 'cancelled') DEFAULT 'pending',
     delivery_staff_id INT,
+    INDEX idx_status (status),
+    INDEX idx_delivery_staff_id (delivery_staff_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (delivery_staff_id) REFERENCES users(id)
