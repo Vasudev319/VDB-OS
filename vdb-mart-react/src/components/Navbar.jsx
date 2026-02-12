@@ -26,20 +26,13 @@ const Navbar = () => {
 
         <div className="navbar-links" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
             {!user ? (
-                <div className="dropdown" style={{ position: 'relative', display: 'inline-block' }}>
-                    <button style={{ background: 'white', color: '#2874F1', padding: '5px 20px', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}>Login as...</button>
-                    <div className="dropdown-content" style={{ position: 'absolute', backgroundColor: '#f9f9f9', minWidth: '160px', boxShadow: '0px 8px 16px 0px rgba(0,0,0,0.2)', zIndex: 1 }}>
-                        <button onClick={() => login('Admin')} style={{ width: '100%', padding: '12px 16px', border: 'none', textAlign: 'left', cursor: 'pointer' }}>Admin</button>
-                        <button onClick={() => login('Seller')} style={{ width: '100%', padding: '12px 16px', border: 'none', textAlign: 'left', cursor: 'pointer' }}>Seller</button>
-                        <button onClick={() => login('Delivery')} style={{ width: '100%', padding: '12px 16px', border: 'none', textAlign: 'left', cursor: 'pointer' }}>Delivery Staff</button>
-                    </div>
-                </div>
+                <Link to="/login" style={{ background: 'white', color: '#2874F1', padding: '5px 20px', fontWeight: 'bold', border: 'none', cursor: 'pointer', textDecoration: 'none' }}>Login</Link>
             ) : (
                 <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                    <span style={{ color: 'white' }}>Hi, {user.name}</span>
-                   {user.role === 'Admin' && <Link to="/admin" style={{ color: 'white' }}>Admin Panel</Link>}
-                   {user.role === 'Seller' && <Link to="/seller" style={{ color: 'white' }}>Seller Panel</Link>}
-                   {user.role === 'Delivery' && <Link to="/delivery" style={{ color: 'white' }}>Delivery Panel</Link>}
+                   {user.role === 'admin' && <Link to="/admin" style={{ color: 'white' }}>Admin Panel</Link>}
+                   {user.role === 'seller' && <Link to="/seller" style={{ color: 'white' }}>Seller Panel</Link>}
+                   {user.role === 'delivery' && <Link to="/delivery" style={{ color: 'white' }}>Delivery Panel</Link>}
                    <button onClick={logout} style={{ background: 'transparent', border: '1px solid white', color: 'white', padding: '5px 10px', cursor: 'pointer' }}>Logout</button>
                 </div>
             )}
