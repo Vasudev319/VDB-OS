@@ -14,6 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['role'] = $user['role'];
 
+        mergeCart($user['id']);
+
         if ($user['role'] == 'admin') redirect('admin/index.php');
         elseif ($user['role'] == 'seller') redirect('seller/index.php');
         elseif ($user['role'] == 'delivery') redirect('delivery/index.php');
