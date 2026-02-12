@@ -6,6 +6,7 @@ import Cart from './components/Cart';
 import AdminPanel from './components/AdminPanel';
 import SellerPanel from './components/SellerPanel';
 import DeliveryPanel from './components/DeliveryPanel';
+import Login from './components/Login';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 
@@ -20,6 +21,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<ProductList />} />
                 <Route path="/cart" element={<Cart />} />
+                <Route path="/login" element={<Login />} />
                 <Route path="/admin" element={<AdminPanel />} />
                 <Route path="/seller" element={<SellerPanel />} />
                 <Route path="/delivery" element={<DeliveryPanel />} />
