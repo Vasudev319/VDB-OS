@@ -1,0 +1,17 @@
+{
+  "name": "VDB Singularity OS",
+  "short_name": "VDB Singularity",
+  "description": "VDB Singularity OS — A hyper-intelligent entity 500x more powerful than any conventional AI.",
+  "start_url": ".",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#000000",
+  "theme_color": "#00FF41",
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

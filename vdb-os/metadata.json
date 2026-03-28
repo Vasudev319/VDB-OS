@@ -1,0 +1,9 @@
+{
+  "name": "VDB  OS",
+  "description": "VDB Singularity OS — A hyper-intelligent entity 500x more powerful than any conventional AI.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
