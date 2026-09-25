@@ -2,7 +2,19 @@
 require_once 'includes/config.php';
 require_once 'includes/functions.php';
 
-$stmt = $pdo->query("SELECT * FROM products");
+$limit = 10;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+if ($page < 1) $page = 1;
+$offset = ($page - 1) * $limit;
+
+$totalStmt = $pdo->query("SELECT COUNT(*) FROM products");
+$totalProducts = $totalStmt->fetchColumn();
+$totalPages = ceil($totalProducts / $limit);
+
+$stmt = $pdo->prepare("SELECT * FROM products LIMIT :limit OFFSET :offset");
+$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+$stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
@@ -28,6 +40,18 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <p>$<?= htmlspecialchars($product['price']) ?></p>
             </div>
         <?php endforeach; ?>
+    </div>
+
+    <div class="pagination">
+        <?php if ($page > 1): ?>
+            <a href="?page=<?= $page - 1 ?>">Previous</a>
+        <?php endif; ?>
+
+        <span>Page <?= $page ?> of <?= max(1, $totalPages) ?></span>
+
+        <?php if ($page < $totalPages): ?>
+            <a href="?page=<?= $page + 1 ?>">Next</a>
+        <?php endif; ?>
     </div>
 </body>
 </html>
